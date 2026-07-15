@@ -3,3 +3,8 @@ sender
 receiver
 *.json
 env/
+env/
+__pycache__/
+*.json
+sender
+receiver

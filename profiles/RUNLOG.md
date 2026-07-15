@@ -1,0 +1,7 @@
+Attempt 1: Profile A, 150ms delay - 0.13% miss, 1.67x overhead. VALID. Initial ARQ implementation with 10ms NACK batching.
+Attempt 2: Profile A, 80ms delay - 1.80% miss, 1.64x overhead. INVALID. Basic ARQ is too slow and spammy; NACK round-trip exceeds deadline.
+Attempt 3: Profile A, 80ms delay - 2.13% miss, 1.65x overhead. INVALID. RTT exceeds deadline. Pivoting to Hybrid XOR FEC + ARQ to recover packets instantly without round-trips.
+Attempt 4: Profile A, 60ms delay - 0.67% miss, 1.55x overhead. VALID. Hybrid FEC instantly rebuilt dropped packets, drastically reducing NACK dependency and surviving the 60ms deadline.
+Attempt 5: Profile B, 60ms delay - 30.60% miss, 1.67x overhead. INVALID. Profile B introduces heavy burst loss, defeating the XOR parity (which only saves 1 packet per pair). ARQ fallback is too slow for 60ms.
+Attempt 6: Profile B, 120ms delay - 2.53% miss, 1.70x overhead. INVALID. Burst losses and network jitter on Profile B are so severe that 120ms cannot physically accommodate the ARQ round-trip time.
+Attempt 7: Profile B, 180ms delay - 0.93% miss, 1.98x overhead. VALID. Implemented a "Double-Tap" ARQ combined with XOR FEC and a 25ms NACK throttle. Traded our remaining bandwidth budget for reliability, brute-forcing the heavy burst losses while staying strictly under the 2.0x cap.
